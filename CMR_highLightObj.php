@@ -176,10 +176,11 @@
                     $.ajax({
                         type: "POST",
                         url: "CMR_pgsqlAPI.php",
+               
                         //dataType: 'json',
-                        highLightObj(result);
+                        highLightObj(result);,
                         data: {functionname: 'getGeoCMRToAjax', paPoint: myPoint},
-                        success : function (result, status, erro) {
+                        success : function ( result, status, erroata) {
                         },
                         error: function (req, status, error) {
                             alert(req + " " + status + " " + error);
