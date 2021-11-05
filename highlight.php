@@ -10,50 +10,38 @@
     <script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js" type="text/javascript"></script>
-    <style>
-        /*
-            .map, .righ-panel {
-                height: 500px;
-                width: 80%;
-                float: left;
-            }
-            */
-        .map,
-        .righ-panel {
-            height: 98vh;
-            width: 80vw;
-            float: left;
-        }
 
-        .map {
-            border: 1px solid #000;
-        }
-    </style>
 </head>
 
 <body onload="initialize_map();">
     <table>
         <tr>
             <td>
-                <div id="map" class="map"></div>
-                <!--<div id="map" style="width: 80vw; height: 100vh;"></div>-->
+                <div id="map" style="width: 80vw; height: 100vh;"></div>
             </td>
             <td>
-                <div id="info"></div>
                 <button>Button</button>
             </td>
         </tr>
     </table>
     <?php include 'CMR_pgsqlAPI.php' ?>
+
     <script>
-        //$("#document").ready(function () {
         var format = 'image/png';
         var map;
-        var mapLat=21.174342976614675;
-        var mapLng =106.06795881323355;
+        var mapLat = 21.174342976614675;
+        var mapLng = 106.06795881323355;
         var mapDefaultZoom = 11.5;
-
+        /*
+        var vectorSource = new ol.source.Vector({
+            features: (new ol.format.GeoJSON()).readFeatures(ObjJson, {
+                dataProjection: 'EPSG:4326',
+                featureProjection: 'EPSG:3857'
+            })
+        });
+*/
         function initialize_map() {
+            //*
             layerBG = new ol.layer.Tile({
                 source: new ol.source.OSM({})
             });
@@ -109,26 +97,29 @@
                 //layers: [layerCMR_adm1],
                 view: viewMap
             });
-
             //map.getView().fit(bounds, map.getSize());
 
             var styles = {
                 'MultiPolygon': new ol.style.Style({
+                    fill: new ol.style.Fill({
+                        color: 'orange'
+                    }),
                     stroke: new ol.style.Stroke({
                         color: 'yellow',
                         width: 2
                     })
                 })
             };
-
-            // show info
             var styleFunction = function(feature) {
                 return styles[feature.getGeometry().getType()];
             };
+            
             var vectorLayer = new ol.layer.Vector({
-                //source: vectorSource,
+                // source: vectorSource,
                 style: styleFunction
             });
+
+            
             map.addLayer(vectorLayer);
 
             function createJsonObj(result) {
@@ -161,13 +152,33 @@
                 map.addLayer(vectorLayer);
             }
 
-            function displayObjInfo(result, coordinate) {
+            function highLightGeoJsonObj(paObjJson) {
+                var vectorSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(paObjJson, {
+                        dataProjection: 'EPSG:4326',
+                        featureProjection: 'EPSG:3857'
+                    })
+                });
+                vectorLayer.setSource(vectorSource);
+                /*
+                var vectorLayer = new ol.layer.Vector({
+                    source: vectorSource
+                });
+                map.addLayer(vectorLayer);
+                */
+            }
+
+            function highLightObj(result) {
                 //alert("result: " + result);
-                //alert("coordinate des: " + coordinate);
-                $("#info").html(result);
+                var strObjJson = createJsonObj(result);
+                //alert(strObjJson);
+                var objJson = JSON.parse(strObjJson);
+                //alert(JSON.stringify(objJson));
+                //drawGeoJsonObj(objJson);
+                highLightGeoJsonObj(objJson);
             }
             map.on('singleclick', function(evt) {
-                //alert("coordinate org: " + evt.coordinate);
+                //alert("coordinate: " + evt.coordinate);
                 //var myPoint = 'POINT(12,5)';
                 var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
                 var lon = lonlat[0];
@@ -180,22 +191,25 @@
                     type: "POST",
                     url: "CMR_pgsqlAPI.php",
                     //dataType: 'json',
-                    //data: {functionname: 'reponseGeoToAjax', paPoint: myPoint},
+                    // highLightObj(result);
                     data: {
-                        functionname: 'getInfoCMRToAjax',
+                        functionname: 'getGeoCMRToAjax',
                         paPoint: myPoint
                     },
                     success: function(result, status, erro) {
-                        displayObjInfo(result, evt.coordinate);
+                        highLightObj(result);
                     },
                     error: function(req, status, error) {
                         alert(req + " " + status + " " + error);
                     }
                 });
-                //*/
+
+                
+
             });
+
+
         };
-        //});
     </script>
 </body>
 
