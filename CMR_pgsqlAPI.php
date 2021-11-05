@@ -20,7 +20,7 @@
     function initDB()
     {
         // Kết nối CSDL
-        $paPDO = new PDO('pgsql:host=Localhost; dbname=covidbn; port=5432', 'postgres', 'postgres');
+        $paPDO = new PDO('pgsql:host=Localhost; dbname=covidbn; port=5433', 'postgres', '123');
         return $paPDO;
     }
     function query($paPDO, $paSQLStr)
@@ -172,8 +172,7 @@
         //echo "<br>";
         //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
         //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
-        // $mySQLStr = "SELECT id_1, shape_leng, shape_area from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
-        $mySQLStr = "SELECT gid from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
+        $mySQLStr = "SELECT gid, name_1 from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
         //echo $mySQLStr;
         //echo "<br><br>";
         $result = query($paPDO, $mySQLStr);
@@ -183,9 +182,9 @@
             $resFin = '<table>';
             // Lặp kết quả
             foreach ($result as $item){
-                $resFin = $resFin.'<tr><td>id_1: '.$item['gid'].'</td></tr>';
-                $resFin = $resFin.'<tr><td>Chu vi: '.$item['gid'].'</td></tr>';
-                $resFin = $resFin.'<tr><td>Diện tích: '.$item['gid'].'</td></tr>';
+                $resFin = $resFin.'<tr><td>gid: '.$item['gid'].'</td></tr>';
+                $resFin = $resFin.'<tr><td>Tên: '.$item['name_1'].'</td></tr>';
+               // $resFin = $resFin.'<tr><td>Diện tích: '.$item['shape_area'].'</td></tr>';
                 break;
             }
             $resFin = $resFin.'</table>';
