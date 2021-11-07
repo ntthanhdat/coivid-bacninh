@@ -20,7 +20,7 @@
     function initDB()
     {
         // Kết nối CSDL
-        $paPDO = new PDO('pgsql:host=Localhost; dbname=covidbn; port=5433', 'postgres', '123');
+        $paPDO = new PDO('pgsql:host=Localhost; dbname=covidbn; port=5432', 'postgres', 'postgres');
         return $paPDO;
     }
     function query($paPDO, $paSQLStr)
