@@ -136,6 +136,9 @@ function createJsonObj(result) {
                         ar=[];
                          ar = result.split('-');
                         for(var i = 0; i < ar.length; i+=2){
+
+                      
+
                             //alert(ar[i]);
                             if(ar[i+1]!='')
                             coloringLayer(ar[i],ar[i+1]);
@@ -147,4 +150,5 @@ function createJsonObj(result) {
                         alert(req + " " + status + " " + error);
                     }
                 });
+
             });
