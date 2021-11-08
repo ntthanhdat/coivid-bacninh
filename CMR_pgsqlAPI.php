@@ -11,6 +11,26 @@
             $aResult = getGeoCMRToAjax($paPDO, $paSRID, $paPoint);
         else if ($functionname == 'getInfoCMRToAjax')
             $aResult = getInfoCMRToAjax($paPDO, $paSRID, $paPoint);
+            //Hàm lấy ra vị trí địa lý
+        else if ($functionname == 'getGeoDistrictCMRToAjax')
+            $aResult = getGeoDistrictCMRToAjax($paPDO, $paSRID, $paPoint);
+        else if ($functionname == 'getGeoVillageCMRToAjax')
+            $aResult = getGeoVillageCMRToAjax($paPDO, $paSRID, $paPoint);
+
+
+//Hàm hiển thị thông tin
+
+        else if ($functionname == 'getInfoDistrictCMRToAjax')
+            $aResult = getInfoDistrictCMRToAjax($paPDO, $paSRID, $paPoint);
+        else if ($functionname == 'popUpInfoOfVillage')
+            $aResult = popUpInfoOfVillage($paPDO, $paSRID, $paPoint);
+          else if ($functionname == 'getColorOnload')
+            $aResult = getColorOnload($paPDO);
+            
+     
+            
+        
+            
         
         echo $aResult;
     
@@ -148,7 +168,7 @@
         //echo $paPoint;
         //echo "<br>";
         //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
-        $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
+        $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_2\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
         //echo $mySQLStr;
         //echo "<br><br>";
         $result = query($paPDO, $mySQLStr);
@@ -163,6 +183,86 @@
         else
             return "null";
     }
+//Hàm trả về màu và geom của các huyện trong tỉnh Bắc Ninh
+function getColorOnload($paPDO)
+{
+
+
+
+    // $paPoint = str_replace(',', ' ', $paPoint);
+    //echo $paPoint;
+    //echo "<br>";
+    //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
+    $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_2\" where varname_2= 'Luong Tai'";
+    //echo $mySQLStr;
+    //echo "<br><br>";
+    $result = query($paPDO, $mySQLStr);
+    
+    if ($result != null)
+    {
+       $str='';
+        // Lặp kết quả
+        foreach ($result as $item){
+            $str = $str+$item['geo']+",";
+        }
+        return $str;
+    }
+    else
+        return "null";
+}
+
+
+
+//Hàm trả về khu vực Huyện
+function getGeoDistrictCMRToAjax($paPDO,$paSRID,$paPoint)
+{
+    //echo $paPoint;
+    //echo "<br>";
+    $paPoint = str_replace(',', ' ', $paPoint);
+    //echo $paPoint;
+    //echo "<br>";
+    //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
+    $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_2\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
+    //echo $mySQLStr;
+    //echo "<br><br>";
+    $result = query($paPDO, $mySQLStr);
+    
+    if ($result != null)
+    {
+        // Lặp kết quả
+        foreach ($result as $item){
+            return $item['geo'];
+        }
+    }
+    else
+        return "null";
+}
+
+//Hàm trả về khu vực Xã
+function getGeoVillageCMRToAjax($paPDO,$paSRID,$paPoint)
+{
+    //echo $paPoint;
+    //echo "<br>";
+    $paPoint = str_replace(',', ' ', $paPoint);
+    //echo $paPoint;
+    //echo "<br>";
+    //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
+    $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_3\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
+    //echo $mySQLStr;
+    //echo "<br><br>";
+    $result = query($paPDO, $mySQLStr);
+    
+    if ($result != null)
+    {
+        // Lặp kết quả
+        foreach ($result as $item){
+            return $item['geo'];
+        }
+    }
+    else
+        return "null";
+}
+//Hàm hiển thị ra thông tin bao gồm số ca nhiễm và tên của Huyện
     function getInfoCMRToAjax($paPDO,$paSRID,$paPoint)
     {
         //echo $paPoint;
@@ -172,7 +272,7 @@
         //echo "<br>";
         //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
         //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
-        $mySQLStr = "SELECT gid, name_1 from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
+        $mySQLStr = "SELECT ca_benh, name_2 from \"gadm36_vnm_2\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
         //echo $mySQLStr;
         //echo "<br><br>";
         $result = query($paPDO, $mySQLStr);
@@ -182,8 +282,8 @@
             $resFin = '<table>';
             // Lặp kết quả
             foreach ($result as $item){
-                $resFin = $resFin.'<tr><td>gid: '.$item['gid'].'</td></tr>';
-                $resFin = $resFin.'<tr><td>Tên: '.$item['name_1'].'</td></tr>';
+                $resFin = $resFin.'<tr><td>Số ca nhiễm: '.$item['ca_benh'].'</td></tr>';
+                $resFin = $resFin.'<tr><td>Huyện: '.$item['name_2'].'</td></tr>';
                // $resFin = $resFin.'<tr><td>Diện tích: '.$item['shape_area'].'</td></tr>';
                 break;
             }
@@ -193,4 +293,64 @@
         else
             return "null";
     }
-?>
+    function getInfoDistrictCMRToAjax($paPDO,$paSRID,$paPoint)
+    {
+        //echo $paPoint;
+        //echo "<br>";
+        $paPoint = str_replace(',', ' ', $paPoint);
+        //echo $paPoint;
+        //echo "<br>";
+        //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
+        //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
+        $mySQLStr = "SELECT ca_benh, name_2 from \"gadm36_vnm_2\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
+        //echo $mySQLStr;
+        //echo "<br><br>";
+        $result = query($paPDO, $mySQLStr);
+        
+        if ($result != null)
+        {
+            $resFin = '<table>';
+            // Lặp kết quả
+            foreach ($result as $item){
+                $resFin = $resFin.'<tr><td>Số ca nhiễm: '.$item['ca_benh'].'</td></tr>';
+                $resFin = $resFin.'<tr><td>Huyện: '.$item['name_2'].'</td></tr>';
+               // $resFin = $resFin.'<tr><td>Diện tích: '.$item['shape_area'].'</td></tr>';
+                break;
+            }
+            $resFin = $resFin.'</table>';
+            return $resFin;
+        }
+        else
+            return "null";
+    }
+    //Hàm hiển thị ra thông tin bao gồm số ca nhiễm và tên của Xã
+    function popUpInfoOfVillage($paPDO,$paSRID,$paPoint)
+    {
+        //echo $paPoint;
+        //echo "<br>";
+        $paPoint = str_replace(',', ' ', $paPoint);
+        //echo $paPoint;
+        //echo "<br>";
+        //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
+        //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
+        $mySQLStr = "SELECT ca_benh, color from \"gadm36_vnm_3\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
+        //echo $mySQLStr;
+        //echo "<br><br>";
+        $result = query($paPDO, $mySQLStr);
+        
+        if ($result != null)
+        {
+            $resFin = '<table>';
+            // Lặp kết quả
+            foreach ($result as $item){
+                $resFin = $resFin.'<tr><td>gid: '.$item['ca_benh'].'</td></tr>';
+                $resFin = $resFin.'<tr><td>Tên: '.$item['color'].'</td></tr>';
+               // $resFin = $resFin.'<tr><td>Diện tích: '.$item['shape_area'].'</td></tr>';
+                break;
+            }
+            $resFin = $resFin.'</table>';
+            return $resFin;
+        }
+        else
+            return "null";
+    }

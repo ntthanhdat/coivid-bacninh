@@ -14,6 +14,58 @@
 </head>
 
 <body onload="initialize_map();">
+<div id="popup" class="ol-popup">
+                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                    <div id="popup-content"></div>
+                </div>
+                Huyền
+<style>
+      hr{
+          margin-top:0 !important;
+          margin-bottom: 0 !important;
+      }
+      .title{
+          color:rgba(14, 14, 134, 0.788)
+      }
+      .form-dl{
+          width: 300px;
+          height: 100px;
+          border:1px solid rgb(78, 72, 72);
+        
+          border-radius: 5px;
+       opacity: 0;
+       visibility: hidden;
+      }
+      .dulieu{
+          padding:8px;
+      }
+      .ca{
+          color:red;
+      }
+      .link:hover .form-dl{
+       opacity: 1;
+       visibility: visible;
+      }
+  </style>
+      <div class="container-fluid">
+          <div class="link">
+            <a href="#"  >
+                <h2>Hoang Thi Huyen</h2>
+            </a>
+                <div class="form-dl ">
+                    <div class="dulieu">
+                      <h5 class="title">Bắc Ninh  </h5>
+                      <hr class="line">
+                      <span>Số ca dương tính đến ngày 8/11/2021 là : <span class="ca"> 20</span> </span>
+                    </div>
+              </div>
+          </div>
+         
+          
+      </div>
+
+
+
     <table>
         <tr>
             <td>
@@ -24,6 +76,7 @@
             </td>
         </tr>
     </table>
+    
     <?php include 'CMR_pgsqlAPI.php' ?>
 
     <script>
@@ -58,7 +111,8 @@
                         'LAYERS': 'gadm36_vnm_1'
                     }
 
-                })
+                }),
+                opacity: 0.5
             });
             // Khai báo layer 2
             var layerVNM_2 = new ol.layer.Image({
@@ -72,7 +126,8 @@
                         'STYLES': '',
                         'LAYERS': 'gadm36_vnm_2'
                     }
-                })
+                }),
+                opacity: 0.5
             });
             // Khai báo layer 3
             var layerVNM_3 = new ol.layer.Image({
@@ -86,7 +141,8 @@
                         'STYLES': '',
                         'LAYERS': 'gadm36_vnm_3'
                     }
-                })
+                }),
+                opacity: 0.5
             });
             // Xác định view
             var viewMap = new ol.View({
@@ -97,7 +153,7 @@
             // Xác định map
             map = new ol.Map({
                 target: "map",
-                layers: [layerBG, layerVNM_1,layerVNM_2,layerVNM_3],
+                layers: [layerBG, layerVNM_2],
                 //layers: [layerCMR_adm1],
                 view: viewMap
             });
@@ -106,25 +162,51 @@
             var styles = {
                 'MultiPolygon': new ol.style.Style({
                     fill: new ol.style.Fill({
-                        color: 'orange'
+                        color: '#ffff99'
                     }),
                     stroke: new ol.style.Stroke({
                         color: 'red',
-                        width: 2
+                        width: 4,
+
                     })
                 })
             };
             var styleFunction = function(feature) {
                 return styles[feature.getGeometry().getType()];
             };
-            
+
             var vectorLayer = new ol.layer.Vector({
                 // source: vectorSource,
-                style: styleFunction
+                style: styleFunction,
+                opacity: 0.8
             });
 
-            
+
             map.addLayer(vectorLayer);
+
+            //Style cho xã
+            // var styles2 = {
+            //     'MultiPolygon': new ol.style.Style({
+            //         fill: new ol.style.Fill({
+            //             color: '##6699ff'
+            //         }),
+            //         stroke: new ol.style.Stroke({
+            //             color: 'blue',
+            //             width: 2
+            //         })
+            //     })
+            // };
+
+            // var styleFunction1 = function(feature) {
+            //     return styles2[feature.getGeometry().getType()];
+            // };
+            // var vectorLayer1 = new ol.layer.Vector({
+            //     // source: vectorSource,
+            //     style: styleFunction1
+            // });
+            // map.addLayer(vectorLayer1);
+
+
 
             function createJsonObj(result) {
                 var geojsonObject = '{' +
@@ -171,18 +253,20 @@
                 map.addLayer(vectorLayer);
                 */
             }
-
+            //Hàm xử lí tô màu lên
             function highLightObj(result) {
                 //alert("result: " + result);
                 var strObjJson = createJsonObj(result);
                 //alert(strObjJson);
                 var objJson = JSON.parse(strObjJson);
-                //alert(JSON.stringify(objJson));
-                //drawGeoJsonObj(objJson);
+                // alert(JSON.stringify(objJson));
+                // drawGeoJsonObj(objJson);
                 highLightGeoJsonObj(objJson);
             }
+
+        //    Xử lí sự kiện khi di chuột đến thì highlight huyện đó
             map.on('singleclick', function(evt) {
-                //alert("coordinate: " + evt.coordinate);
+                this.getTargetElement().style.cursor = 'pointer';
                 //var myPoint = 'POINT(12,5)';
                 var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
                 var lon = lonlat[0];
@@ -190,6 +274,7 @@
                 var myPoint = 'POINT(' + lon + ' ' + lat + ')';
                 //alert("myPoint: " + myPoint);
                 //*
+                
 
                 $.ajax({
                     type: "POST",
@@ -197,25 +282,47 @@
                     //dataType: 'json',
                     // highLightObj(result);
                     data: {
-                        functionname: 'getGeoCMRToAjax',
+                        functionname: 'getGeoDistrictCMRToAjax',
+                        // functionname: 'getInfoCMRToAjax',
                         paPoint: myPoint
                     },
                     success: function(result, status, erro) {
+                        // alert(result);
+
                         highLightObj(result);
+                        // alert(result);
+
                     },
                     error: function(req, status, error) {
                         alert(req + " " + status + " " + error);
                     }
                 });
 
-                
-
             }
-
-
-
               );
 
+
+                $.ajax({
+                    type: "POST",
+                    url: "CMR_pgsqlAPI.php",
+                    //dataType: 'json',
+                    // highLightObj(result);
+                    data: {
+                        functionname: 'getColorOnload',
+                        // // functionname: 'getInfoCMRToAjax',
+                        // paPoint: myPoint
+                    },
+                    success: function(result, status, erro) {
+                        var foo = [];
+                        foo=result.split(",");
+                        alert(foo);
+                        drawGeoJsonObj(objJson);
+                        // highLightObj(result);
+                    },
+                    error: function(req, status, error) {
+                        alert(req + " " + status + " " + error);
+                    }
+                });
 
         };
     </script>

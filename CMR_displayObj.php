@@ -36,6 +36,7 @@
         <tr>
             <td>
                 <div id="map" class="map"></div>
+                <div class="pop-up"></div>
                 <!--<div id="map" style="width: 80vw; height: 100vh;"></div>-->
             </td>
             <td>
@@ -167,8 +168,8 @@
             }
 
             function displayObjInfo(result, coordinate) {
-                //alert("result: " + result);
-                //alert("coordinate des: " + coordinate);
+                alert("result: " + result);
+                alert("coordinate des: " + coordinate);
                 $("#info").html(result);
             }
             map.on('singleclick', function(evt) {

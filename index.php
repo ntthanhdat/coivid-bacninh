@@ -28,10 +28,19 @@
         .map {
             border: 1px solid #000;
         }
+        #info
+        {
+            position: relative;
+            
+        }
     </style>
 </head>
 
 <body onload="initialize_map();">
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+    </div>
     <table>
         <tr>
             <td>
@@ -46,31 +55,21 @@
     </table>
     <?php include 'CMR_pgsqlAPI.php' ?>
     <script>
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var closer = document.getElementById('popup-closer');
         //$("#document").ready(function () {
         var format = 'image/png';
         var map;
-<<<<<<< HEAD
-        var mapLat=21.110436537668942; //21.110436537668942, 106.1109522568708
-        var mapLng = 106.1109522568708;
+        var mapLat = 21.174342976614675;
+        var mapLng = 106.06795881323355;
         var mapDefaultZoom = 11.5;
-        var vectorSource = new ol.source.Vector({
-features: (new
-ol.format.GeoJSON()).readFeatures(ObjJson, {
-dataProjection: 'EPSG:4326',
-featureProjection: 'EPSG:3857'
-})
-});
-=======
-        var mapLat=21.174342976614675;
-        var mapLng =106.06795881323355;
-        var mapDefaultZoom = 11.5;
-
->>>>>>> origin/MapFunction
+        //Khởi tạo openlayer
         function initialize_map() {
             layerBG = new ol.layer.Tile({
                 source: new ol.source.OSM({})
             });
-            //*/
+            // Khai báo lớp 1*/
             var layerVNM_1 = new ol.layer.Image({
                 source: new ol.source.ImageWMS({
                     ratio: 1,
@@ -103,6 +102,7 @@ featureProjection: 'EPSG:3857'
                 zoom: mapDefaultZoom
                 //projection: projection
             });
+            //Khai báo lớp 3
             var layerVNM_3 = new ol.layer.Image({
                 source: new ol.source.ImageWMS({
                     ratio: 1,
@@ -121,9 +121,10 @@ featureProjection: 'EPSG:3857'
                 zoom: mapDefaultZoom
                 //projection: projection
             });
+            //Hiển thị map
             map = new ol.Map({
                 target: "map",
-                layers: [layerBG, layerVNM_1],
+                layers: [layerBG, layerVNM_2],
                 //layers: [layerCMR_adm1],
                 view: viewMap
             });
@@ -134,7 +135,7 @@ featureProjection: 'EPSG:3857'
                 'MultiPolygon': new ol.style.Style({
                     stroke: new ol.style.Stroke({
                         color: 'yellow',
-                        width: 2
+                        width: 3
                     })
                 })
             };
@@ -166,6 +167,17 @@ featureProjection: 'EPSG:3857'
                 return geojsonObject;
             }
 
+            function myFunction() {
+                var popup = document.getElementById("popup");
+                popup.classList.toggle("show");
+            }
+
+            function displayObjInfo(result, coordinate) {
+                $("#popup-content").html(result);
+                overlay.setPosition(coordinate);
+
+            }
+
             function drawGeoJsonObj(paObjJson) {
                 var vectorSource = new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(paObjJson, {
@@ -179,72 +191,36 @@ featureProjection: 'EPSG:3857'
                 map.addLayer(vectorLayer);
             }
 
-<<<<<<< HEAD
-                function createJsonObj(result) {                    
-                    var geojsonObject = '{'
-                            + '"type": "FeatureCollection",'
-                            + '"crs": {'
-                                + '"type": "name",'
-                                + '"properties": {'
-                                    + '"name": "EPSG:4326"'
-                                + '}'
-                            + '},'
-                            + '"features": [{'
-                                + '"type": "Feature",'
-                                + '"geometry": ' + result
-                            + '}]'
-                        + '}';
-                    return geojsonObject;
-                }
-                function drawGeoJsonObj(paObjJson) {
-                    var vectorSource = new ol.source.Vector({
-                        features: (new ol.format.GeoJSON()).readFeatures(paObjJson, {
-                            dataProjection: 'EPSG:4326',
-                            featureProjection: 'EPSG:3857'
-                        })
-                    });
-                    var vectorLayer = new ol.layer.Vector({
-                        source: vectorSource
-                    });
-                    map.addLayer(vectorLayer);
-                }
-                function displayObjInfo(result, coordinate)
-                {
-                    //alert("result: " + result);
-                    //alert("coordinate des: " + coordinate);
-					$("#info").html(result);
-                }
-                map.on('singleclick', function (evt) {
-                    //alert("coordinate org: " + evt.coordinate);
-                    //var myPoint = 'POINT(12,5)';
-                    var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
-                    var lon = lonlat[0];
-                    var lat = lonlat[1];
-                    var myPoint = 'POINT(' + lon + ' ' + lat + ')';
-                    //alert("myPoint: " + myPoint);
-                    //*
-                    
-                    $.ajax({
-                        type: "POST",
-                        url: "CMR_pgsqlAPI.php",
-                        //dataType: 'json',
-                        //data: {functionname: 'reponseGeoToAjax', paPoint: myPoint},
-                        data: {functionname: 'getInfoCMRToAjax', paPoint: myPoint},
-                        success : function (result, status, erro) {
-                            displayObjInfo(result, evt.coordinate );
-                        },
-                        error: function (req, status, error) {
-                            alert(req + " " + status + " " + error);
-                        }
-                    });
-                    //*/
-                });
-    };
-=======
             function displayObjInfo(result, coordinate) {
                 //alert("result: " + result);
                 //alert("coordinate des: " + coordinate);
                 $("#info").html(result);
+            }
+
+            function highLightGeoJsonObj(paObjJson) {
+                var vectorSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(paObjJson, {
+                        dataProjection: 'EPSG:4326',
+                        featureProjection: 'EPSG:3857'
+                    })
+                });
+                vectorLayer.setSource(vectorSource);
+
+                var vectorLayer = new ol.layer.Vector({
+                    source: vectorSource
+                });
+                map.addLayer(vectorLayer);
+
+            }
+
+            function highLightObj(result) {
+                //alert("result: " + result);
+                var strObjJson = createJsonObj(result);
+                //alert(strObjJson);
+                var objJson = JSON.parse(strObjJson);
+                //alert(JSON.stringify(objJson));
+                //drawGeoJsonObj(objJson);
+                highLightGeoJsonObj(objJson);
             }
             map.on('singleclick', function(evt) {
                 //alert("coordinate org: " + evt.coordinate);
@@ -256,6 +232,7 @@ featureProjection: 'EPSG:3857'
                 //alert("myPoint: " + myPoint);
                 //*
 
+
                 $.ajax({
                     type: "POST",
                     url: "CMR_pgsqlAPI.php",
@@ -266,17 +243,41 @@ featureProjection: 'EPSG:3857'
                         paPoint: myPoint
                     },
                     success: function(result, status, erro) {
+                        // alert(displayObjInfo(result,evt.coordinate));
                         displayObjInfo(result, evt.coordinate);
+                        // highLightGeoJsonObj(result);
                     },
                     error: function(req, status, error) {
                         alert(req + " " + status + " " + error);
                     }
                 });
+                // $.ajax({
+                //     type: "POST",
+                //     url: "CMR_pgsqlAPI.php",
+                //     //dataType: 'json',
+                //     //data: {functionname: 'reponseGeoToAjax', paPoint: myPoint},
+                //     data: {
+                //         functionname: 'getGeoDistrictCMRToAjax',
+                //         paPoint: myPoint
+                //     },
+                //     success: function(result, status, erro) {
+                //         displayObjInfo(result, evt.coordinate);
+                //         highLightGeoJsonObj(result);
+                //     },
+                //     error: function(req, status, error) {
+                //         alert(req + " " + status + " " + error);
+                //     }
+                // });
+
+
+
                 //*/
             });
+
+            //Thêm sự kiện khi di chuyển đến vị trí Huyện
+
         };
         //});
->>>>>>> origin/MapFunction
     </script>
 </body>
 
