@@ -3,6 +3,7 @@
     {
         $paPDO = initDB();
         $paSRID = '4326';
+        if(isset($_POST['paPoint']))
         $paPoint = $_POST['paPoint'];
         $functionname = $_POST['functionname'];
         
@@ -10,7 +11,7 @@
         if  ($functionname == 'displayMapToAjax')
             $aResult = displayMapToAjax($paPDO, $paSRID, $paPoint);
         elseif($functionname == 'coloringAJAX')
-        $aResult = coloringAJAX($paPDO, $paSRID, $paPoint);
+        $aResult = coloringAJAX($paPDO);
         
         echo $aResult;
     
@@ -52,9 +53,23 @@
         // Ngắt kết nối
         $paPDO = null;
     }
-    function coloringAJAX($paPDO,$paSRID,$paPoint)
+    function coloringAJAX($paPDO)
     {
-        return "khong chon huyen nao";
+        $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo, color from \"gadm36_vnm_2\""; //ten cac xa trong huyen
+        $result = query($paPDO, $mySQLStr);
+        
+        if ($result != null)
+        {  
+           
+            $ds="";
+            
+            foreach($result as $item){
+            $ds=$ds.$item['geo']."-".$item['color']."-";
+            }
+            return $ds;
+        }
+        else
+            return "khong co huyen nao";
        
     }
     function displayMapToAjax($paPDO,$paSRID,$paPoint) {

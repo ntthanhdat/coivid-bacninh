@@ -48,15 +48,15 @@
     <script>
         var format = 'image/png';
         var map;
-        var mapLat = 21.174342976614675;
-        var mapLng = 106.06795881323355;
+        var mapLat=21.110436537668942; //21.110436537668942, 106.1109522568708
+        var mapLng = 106.1109522568708;
         var mapDefaultZoom = 11.5;
 
         function initialize_map() {
             layerBG = new ol.layer.Tile({
                 source: new ol.source.OSM({})
             });
-            var layerVNM_2 = new ol.layer.Image({
+            var layerVNM_1 = new ol.layer.Image({
                 source: new ol.source.ImageWMS({
                     ratio: 1,
                     url: 'http://localhost:8080/geoserver/covidbn/wms',
@@ -65,7 +65,7 @@
                         'FORMAT': format,
                         'VERSION': '1.1.0',
                         'STYLES': '',
-                        'LAYERS': 'gadm36_vnm_2'
+                        'LAYERS': 'gadm36_vnm_1'
                     }
                 })
             });
@@ -75,12 +75,15 @@
             });
             map = new ol.Map({
                 target: "map",
-                layers: [layerBG, layerVNM_2],
+                layers: [layerBG, layerVNM_1],
                 view: viewMap
             });
             //ad layer vnm_3, coloring
-            <?php include('switchLayer.php'); ?>
-            //het click       
+            <?php include('switchLayer.php'); ?>       
+
+            <?php include('loadColor.php'); ?> //to mau tu dong cac huyen
+            
+            
         };
     </script>
 </body>
