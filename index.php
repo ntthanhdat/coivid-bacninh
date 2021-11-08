@@ -52,6 +52,8 @@
         var mapLng = 106.1109522568708;
         var mapDefaultZoom = 11.5;
 
+
+
         function initialize_map() {
             layerBG = new ol.layer.Tile({
                 source: new ol.source.OSM({})
@@ -81,10 +83,12 @@
             //ad layer vnm_3, coloring
             <?php include('switchLayer.php'); ?>       
 
+
             <?php include('loadColor.php'); ?> //to mau tu dong cac huyen
             
             
         };
+
     </script>
 </body>
 
