@@ -7,12 +7,11 @@
         $functionname = $_POST['functionname'];
         
         $aResult ="ajax";
-        if ($functionname == 'getGeoCMRToAjax')
-            $aResult = getGeoCMRToAjax($paPDO, $paSRID, $paPoint);
-        else if ($functionname == 'getInfoCMRToAjax')
-            $aResult = getInfoCMRToAjax($paPDO, $paSRID, $paPoint);
-        else if ($functionname == 'diplayMapToAjax')
-            $aResult = diplayMapToAjax($paPDO, $paSRID, $paPoint);
+        if  ($functionname == 'displayMapToAjax')
+            $aResult = displayMapToAjax($paPDO, $paSRID, $paPoint);
+        elseif($functionname == 'coloringAJAX')
+        $aResult = coloringAJAX($paPDO, $paSRID, $paPoint);
+        
         echo $aResult;
     
         closeDB($paPDO);
@@ -53,119 +52,12 @@
         // Ngắt kết nối
         $paPDO = null;
     }
-    function example1($paPDO)
+    function coloringAJAX($paPDO,$paSRID,$paPoint)
     {
-        $mySQLStr = "SELECT * FROM \"gadm36_vnm_1\"";
-        $result = query($paPDO, $mySQLStr);
-
-        if ($result != null)
-        {
-            // Lặp kết quả
-            foreach ($result as $item){
-                echo $item['name_0'] . ' - '. $item['name_1'];
-                echo "<br>";
-            }
-        }
-        else
-        {
-            echo "example1 - null";
-            echo "<br>";
-        }
+        return "khong chon huyen nao";
+       
     }
-    function example2($paPDO)
-    {
-        $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\"";
-        $result = query($paPDO, $mySQLStr);
-        
-        if ($result != null)
-        {
-            // Lặp kết quả
-            foreach ($result as $item){
-                echo $item['geo'];
-                echo "<br><br>";
-            }
-        }
-        else
-        {
-            echo "example2 - null";
-            echo "<br>";
-        }
-    }
-    function example3($paPDO,$paSRID,$paPoint)
-    {
-        echo $paPoint;
-        echo "<br>";
-        $paPoint = str_replace(',', ' ', $paPoint);
-        echo $paPoint;
-        echo "<br>";
-        //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
-        $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
-        echo $mySQLStr;
-        echo "<br><br>";
-        $result = query($paPDO, $mySQLStr);
-        
-        if ($result != null)
-        {
-            // Lặp kết quả
-            foreach ($result as $item){
-                echo $item['geo'];
-                echo "<br><br>";
-            }
-        }
-        else
-        {
-            echo "example2 - null";
-            echo "<br>";
-        }
-    }
-    function getResult($paPDO,$paSRID,$paPoint)
-    {
-        //echo $paPoint;
-        //echo "<br>";
-        $paPoint = str_replace(',', ' ', $paPoint);
-        //echo $paPoint;
-        //echo "<br>";
-        //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
-        $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
-        //echo $mySQLStr;
-        //echo "<br><br>";
-        $result = query($paPDO, $mySQLStr);
-        
-        if ($result != null)
-        {
-            // Lặp kết quả
-            foreach ($result as $item){
-                return $item['geo'];
-            }
-        }
-        else
-            return "null";
-    }
-    function getGeoCMRToAjax($paPDO,$paSRID,$paPoint)
-    {
-        //echo $paPoint;
-        //echo "<br>";
-        $paPoint = str_replace(',', ' ', $paPoint);
-        //echo $paPoint;
-        //echo "<br>";
-        //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
-        $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_3\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
-        //echo $mySQLStr;
-        //echo "<br><br>";
-        $result = query($paPDO, $mySQLStr);
-        
-        if ($result != null)
-        {
-            // Lặp kết quả
-            foreach ($result as $item){
-                return $item['geo'];
-            }
-        }
-        else
-            return "null";
-    }
-    function diplayMapToAjax($paPDO,$paSRID,$paPoint)
-    {
+    function displayMapToAjax($paPDO,$paSRID,$paPoint) {
         $paPoint = str_replace(',', ' ', $paPoint); $mySQLStr1 = "select name_2 from \"gadm36_vnm_2\"  where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
         $result1 = query($paPDO, $mySQLStr1);
         if($result1!= null){
@@ -173,7 +65,7 @@
             foreach ($result1 as $huyen){
                 $tenhuyen=$huyen['name_2'];
             }
-            $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_3\" where name_2 like '$tenhuyen' "; //ten cac xa trong huyen
+            $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo, color from \"gadm36_vnm_3\" where name_2 like '$tenhuyen' "; //ten cac xa trong huyen
             $result = query($paPDO, $mySQLStr);
             
             if ($result != null)
@@ -182,7 +74,7 @@
                 $ds="";
                 
                 foreach($result as $xa){
-                $ds=$ds.$xa['geo']."-";
+                $ds=$ds.$xa['geo']."-".$xa['color']."-";
                 }
                 return $ds;
             }

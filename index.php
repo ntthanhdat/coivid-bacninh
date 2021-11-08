@@ -44,9 +44,8 @@
             </td>
         </tr>
     </table>
-    <?php include 'covidBN_API' ?>
+    <?php include 'CMR_pgsqlAPI.php' ?>
     <script>
-        //$("#document").ready(function () {
         var format = 'image/png';
         var map;
         var mapLat = 21.174342976614675;
@@ -73,57 +72,16 @@
             var viewMap = new ol.View({
                 center: ol.proj.fromLonLat([mapLng, mapLat]),
                 zoom: mapDefaultZoom
-                //projection: projection
             });
             map = new ol.Map({
                 target: "map",
                 layers: [layerBG, layerVNM_2],
-                //layers: [layerCMR_adm1],
                 view: viewMap
             });
-
-            //map.getView().fit(bounds, map.getSize());
-
-            var styles = {
-                'MultiPolygon': new ol.style.Style({
-                    stroke: new ol.style.Stroke({
-                        color: 'yellow',
-                        width: 2
-                    })
-                })
-            };
-
-            // show info
-            var styleFunction = function(feature) {
-                return styles[feature.getGeometry().getType()];
-            };
-            var vectorLayer = new ol.layer.Vector({
-                //source: vectorSource,
-                style: styleFunction
-            });
-            map.addLayer(vectorLayer);
-
-            function createJsonObj(result) {
-                var geojsonObject = '{' +
-                    '"type": "FeatureCollection",' +
-                    '"crs": {' +
-                    '"type": "name",' +
-                    '"properties": {' +
-                    '"name": "EPSG:4326"' +
-                    '}' +
-                    '},' +
-                    '"features": [{' +
-                    '"type": "Feature",' +
-                    '"geometry": ' + result +
-                    '}]' +
-                    '}';
-                return geojsonObject;
-            }
-
-
-           <?php include('switchLayer.php'); ?>
+            //ad layer vnm_3, coloring
+            <?php include('switchLayer.php'); ?>
+            //het click       
         };
-        //});
     </script>
 </body>
 

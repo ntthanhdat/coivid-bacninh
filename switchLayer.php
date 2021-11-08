@@ -1,56 +1,147 @@
-function drawGeoJsonObj(paObjJson) {
+function createJsonObj(result) {
+                var geojsonObject = '{' +
+                    '"type": "FeatureCollection",' +
+                    '"crs": {' +
+                    '"type": "name",' +
+                    '"properties": {' +
+                    '"name": "EPSG:4326"' +
+                    '}' +
+                    '},' +
+                    '"features": [{' +
+                    '"type": "Feature",' +
+                    '"geometry": ' + result +
+                    '}]' +
+                    '}';
+                return geojsonObject;
+            }
+  
+            function R_drawGeoJsonObj(paObjJson) {
                 var vectorSource = new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(paObjJson, {
                         dataProjection: 'EPSG:4326',
                         featureProjection: 'EPSG:3857'
                     })
                 });
+                var styles  = {
+                    'MultiPolygon': new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'red',
+                            
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: '#660000', 
+                            width: 2
+                        })
+                    })
+                };
+                var styleFunction = function (feature) {
+                    return styles[feature.getGeometry().getType()];
+                };
                 var vectorLayer = new ol.layer.Vector({
-                    source: vectorSource
+                    source: vectorSource,
+                    style: styleFunction,
+                });
+                map.addLayer(vectorLayer);
+            }
+            function G_drawGeoJsonObj(paObjJson) {
+                var vectorSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(paObjJson, {
+                        dataProjection: 'EPSG:4326',
+                        featureProjection: 'EPSG:3857'
+                    })
+                });
+                var styles  = {
+                    'MultiPolygon': new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'green',
+                            
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: '#001a00', 
+                            width: 2
+                        })
+                    })
+                };
+                var styleFunction = function (feature) {
+                    return styles[feature.getGeometry().getType()];
+                };
+                var vectorLayer = new ol.layer.Vector({
+                    source: vectorSource,
+                    style: styleFunction,
+                });
+                map.addLayer(vectorLayer);
+            }
+            function Y_drawGeoJsonObj(paObjJson) {
+                var vectorSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(paObjJson, {
+                        dataProjection: 'EPSG:4326',
+                        featureProjection: 'EPSG:3857'
+                    })
+                });
+                var styles  = {
+                    'MultiPolygon': new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'yellow',
+                            
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'orange', 
+                            width: 2
+                        })
+                    })
+                };
+                var styleFunction = function (feature) {
+                    return styles[feature.getGeometry().getType()];
+                };
+                var vectorLayer = new ol.layer.Vector({
+                    source: vectorSource,
+                    style: styleFunction,
                 });
                 map.addLayer(vectorLayer);
             }
 
 
             function highLightObj(result) {
-                //alert("result: " + result);
                 var strObjJson = createJsonObj(result);
-                //alert(strObjJson);
                 var objJson = JSON.parse(strObjJson);
-                //alert(JSON.stringify(objJson)); //test
                 drawGeoJsonObj(objJson);
-                //highLightGeoJsonObj(objJson);
+            }
+            
+            function coloringLayer(result, color) {
+                var strObjJson = createJsonObj(result);
+                var objJson = JSON.parse(strObjJson);
+                if(color=='R'){
+                    R_drawGeoJsonObj(objJson);
+                }else if(color=='G'){
+                    G_drawGeoJsonObj(objJson);
+                }else 
+                Y_drawGeoJsonObj(objJson);
+                
             }
             map.on('singleclick', function(evt) {
-                //alert("coordinate org: " + evt.coordinate);
-                //var myPoint = 'POINT(12,5)';
                 var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
                 var lon = lonlat[0];
                 var lat = lonlat[1];
                 var myPoint = 'POINT(' + lon + ' ' + lat + ')';
-                //alert("myPoint: " + myPoint);
                 //*
 
                 $.ajax({
                     type: "POST",
                     url: "covidBN_API.php",
-                    //dataType: 'json',
-                    //data: {functionname: 'reponseGeoToAjax', paPoint: myPoint},
                     data: {
-                        functionname: 'diplayMapToAjax',
+                        functionname: 'displayMapToAjax',
                         paPoint: myPoint
                     },
                     success: function(result, status, erro) {
-                        //displayObjInfo(result);
-                        //highLightObj(result);
-                        //alert(result);
-                        //alert(typeof(result));
-                        
                         ar=[];
                          ar = result.split('-');
-                        for(var i = 0; i < ar.length-1; i++){
+                        for(var i = 0; i < ar.length; i+=2){
+
+                      
+
                             //alert(ar[i]);
-                            highLightObj(ar[i]);
+                            if(ar[i+1]!='')
+                            coloringLayer(ar[i],ar[i+1]);
                         }
                         
                         
@@ -59,5 +150,5 @@ function drawGeoJsonObj(paObjJson) {
                         alert(req + " " + status + " " + error);
                     }
                 });
-                //*/
+
             });
