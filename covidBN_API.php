@@ -6,12 +6,13 @@
         $paPoint = $_POST['paPoint'];
         $functionname = $_POST['functionname'];
         
-        $aResult = "null";
+        $aResult ="ajax";
         if ($functionname == 'getGeoCMRToAjax')
             $aResult = getGeoCMRToAjax($paPDO, $paSRID, $paPoint);
         else if ($functionname == 'getInfoCMRToAjax')
             $aResult = getInfoCMRToAjax($paPDO, $paSRID, $paPoint);
-        
+        else if ($functionname == 'diplayMapToAjax')
+            $aResult = diplayMapToAjax($paPDO, $paSRID, $paPoint);
         echo $aResult;
     
         closeDB($paPDO);
@@ -148,7 +149,7 @@
         //echo $paPoint;
         //echo "<br>";
         //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
-        $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
+        $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_3\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
         //echo $mySQLStr;
         //echo "<br><br>";
         $result = query($paPDO, $mySQLStr);
@@ -163,34 +164,32 @@
         else
             return "null";
     }
-    function getInfoCMRToAjax($paPDO,$paSRID,$paPoint)
+    function diplayMapToAjax($paPDO,$paSRID,$paPoint)
     {
-        //echo $paPoint;
-        //echo "<br>";
-        $paPoint = str_replace(',', ' ', $paPoint);
-        //echo $paPoint;
-        //echo "<br>";
-        //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
-        //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
-        $mySQLStr = "SELECT gid, name_1 from \"gadm36_vnm_1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
-        //echo $mySQLStr;
-        //echo "<br><br>";
-        $result = query($paPDO, $mySQLStr);
-        
-        if ($result != null)
-        {
-            $resFin = '<table>';
-            // Lặp kết quả
-            foreach ($result as $item){
-                $resFin = $resFin.'<tr><td>gid: '.$item['gid'].'</td></tr>';
-                $resFin = $resFin.'<tr><td>Tên: '.$item['name_1'].'</td></tr>';
-               // $resFin = $resFin.'<tr><td>Diện tích: '.$item['shape_area'].'</td></tr>';
-                break;
+        $paPoint = str_replace(',', ' ', $paPoint); $mySQLStr1 = "select name_2 from \"gadm36_vnm_2\"  where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
+        $result1 = query($paPDO, $mySQLStr1);
+        if($result1!= null){
+            $tenhuyen='Luong Tai';
+            foreach ($result1 as $huyen){
+                $tenhuyen=$huyen['name_2'];
             }
-            $resFin = $resFin.'</table>';
-            return $resFin;
+            $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_3\" where name_2 like '$tenhuyen' "; //ten cac xa trong huyen
+            $result = query($paPDO, $mySQLStr);
+            
+            if ($result != null)
+            {  
+               
+                $ds="";
+                
+                foreach($result as $xa){
+                $ds=$ds.$xa['geo']."-";
+                }
+                return $ds;
+            }
+            else
+                return "khong co xa nao";
         }
         else
-            return "null";
+        return "khong chon huyen nao";
+       
     }
-?>
