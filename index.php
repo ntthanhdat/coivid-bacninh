@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>OpenStreetMap &amp; OpenLayers - Marker Example</title>
+    <title>Covid Bac Ninh</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css" />
@@ -44,33 +44,18 @@
             </td>
         </tr>
     </table>
-    <?php include 'CMR_pgsqlAPI.php' ?>
+    <?php include 'covidBN_API' ?>
     <script>
         //$("#document").ready(function () {
         var format = 'image/png';
         var map;
-        var mapLat=21.174342976614675;
-        var mapLng =106.06795881323355;
+        var mapLat = 21.174342976614675;
+        var mapLng = 106.06795881323355;
         var mapDefaultZoom = 11.5;
 
         function initialize_map() {
             layerBG = new ol.layer.Tile({
                 source: new ol.source.OSM({})
-            });
-            //*/
-            var layerVNM_1 = new ol.layer.Image({
-                source: new ol.source.ImageWMS({
-                    ratio: 1,
-                    url: 'http://localhost:8080/geoserver/covidbn/wms',
-
-                    params: {
-                        'FORMAT': format,
-                        'VERSION': '1.1.0',
-                        'STYLES': '',
-                        'LAYERS': 'gadm36_vnm_1'
-                    }
-
-                })
             });
             var layerVNM_2 = new ol.layer.Image({
                 source: new ol.source.ImageWMS({
@@ -85,19 +70,6 @@
                     }
                 })
             });
-            var layerVNM_3 = new ol.layer.Image({
-                source: new ol.source.ImageWMS({
-                    ratio: 1,
-                    url: 'http://localhost:8080/geoserver/covidbn/wms',
-
-                    params: {
-                        'FORMAT': format,
-                        'VERSION': '1.1.0',
-                        'STYLES': '',
-                        'LAYERS': 'gadm36_vnm_3'
-                    }
-                })
-            });
             var viewMap = new ol.View({
                 center: ol.proj.fromLonLat([mapLng, mapLat]),
                 zoom: mapDefaultZoom
@@ -105,7 +77,7 @@
             });
             map = new ol.Map({
                 target: "map",
-                layers: [layerBG, layerVNM_1],
+                layers: [layerBG, layerVNM_2],
                 //layers: [layerCMR_adm1],
                 view: viewMap
             });
@@ -148,52 +120,8 @@
                 return geojsonObject;
             }
 
-            function drawGeoJsonObj(paObjJson) {
-                var vectorSource = new ol.source.Vector({
-                    features: (new ol.format.GeoJSON()).readFeatures(paObjJson, {
-                        dataProjection: 'EPSG:4326',
-                        featureProjection: 'EPSG:3857'
-                    })
-                });
-                var vectorLayer = new ol.layer.Vector({
-                    source: vectorSource
-                });
-                map.addLayer(vectorLayer);
-            }
 
-            function displayObjInfo(result, coordinate) {
-                //alert("result: " + result);
-                //alert("coordinate des: " + coordinate);
-                $("#info").html(result);
-            }
-            map.on('singleclick', function(evt) {
-                //alert("coordinate org: " + evt.coordinate);
-                //var myPoint = 'POINT(12,5)';
-                var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
-                var lon = lonlat[0];
-                var lat = lonlat[1];
-                var myPoint = 'POINT(' + lon + ' ' + lat + ')';
-                //alert("myPoint: " + myPoint);
-                //*
-
-                $.ajax({
-                    type: "POST",
-                    url: "CMR_pgsqlAPI.php",
-                    //dataType: 'json',
-                    //data: {functionname: 'reponseGeoToAjax', paPoint: myPoint},
-                    data: {
-                        functionname: 'getInfoCMRToAjax',
-                        paPoint: myPoint
-                    },
-                    success: function(result, status, erro) {
-                        displayObjInfo(result, evt.coordinate);
-                    },
-                    error: function(req, status, error) {
-                        alert(req + " " + status + " " + error);
-                    }
-                });
-                //*/
-            });
+           <?php include('switchLayer.php'); ?>
         };
         //});
     </script>
