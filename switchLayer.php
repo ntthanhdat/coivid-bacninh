@@ -48,7 +48,7 @@ function drawGeoJsonObj(paObjJson) {
                         
                         ar=[];
                          ar = result.split('-');
-                        for(var i = 0; i < ar.length; i++){
+                        for(var i = 0; i < ar.length-1; i++){
                             //alert(ar[i]);
                             highLightObj(ar[i]);
                         }
