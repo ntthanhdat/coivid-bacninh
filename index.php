@@ -11,13 +11,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js" type="text/javascript"></script>
     <style>
-        /*
-            .map, .righ-panel {
-                height: 500px;
-                width: 80%;
-                float: left;
-            }
-            */
         .map,
         .righ-panel {
             height: 98vh;
@@ -44,9 +37,8 @@
             </td>
         </tr>
     </table>
-    <?php include 'covidBN_API' ?>
     <script>
-        //$("#document").ready(function () {
+       
         var format = 'image/png';
         var map;
         var mapLat = 21.174342976614675;
@@ -73,17 +65,12 @@
             var viewMap = new ol.View({
                 center: ol.proj.fromLonLat([mapLng, mapLat]),
                 zoom: mapDefaultZoom
-                //projection: projection
             });
             map = new ol.Map({
                 target: "map",
                 layers: [layerBG, layerVNM_2],
-                //layers: [layerCMR_adm1],
                 view: viewMap
             });
-
-            //map.getView().fit(bounds, map.getSize());
-
             var styles = {
                 'MultiPolygon': new ol.style.Style({
                     stroke: new ol.style.Stroke({
@@ -98,7 +85,6 @@
                 return styles[feature.getGeometry().getType()];
             };
             var vectorLayer = new ol.layer.Vector({
-                //source: vectorSource,
                 style: styleFunction
             });
             map.addLayer(vectorLayer);
@@ -119,7 +105,7 @@
                     '}';
                 return geojsonObject;
             }
-
+            
 
            <?php include('switchLayer.php'); ?>
         };
