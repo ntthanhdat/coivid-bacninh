@@ -11,6 +11,13 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js" type="text/javascript"></script>
     <style>
+        /*
+            .map, .righ-panel {
+                height: 500px;
+                width: 80%;
+                float: left;
+            }
+            */
         .map,
         .righ-panel {
             height: 98vh;
@@ -37,8 +44,8 @@
             </td>
         </tr>
     </table>
+    <?php include 'CMR_pgsqlAPI.php' ?>
     <script>
-       
         var format = 'image/png';
         var map;
         var mapLat = 21.174342976614675;
@@ -71,45 +78,10 @@
                 layers: [layerBG, layerVNM_2],
                 view: viewMap
             });
-            var styles = {
-                'MultiPolygon': new ol.style.Style({
-                    stroke: new ol.style.Stroke({
-                        color: 'yellow',
-                        width: 2
-                    })
-                })
-            };
-
-            // show info
-            var styleFunction = function(feature) {
-                return styles[feature.getGeometry().getType()];
-            };
-            var vectorLayer = new ol.layer.Vector({
-                style: styleFunction
-            });
-            map.addLayer(vectorLayer);
-
-            function createJsonObj(result) {
-                var geojsonObject = '{' +
-                    '"type": "FeatureCollection",' +
-                    '"crs": {' +
-                    '"type": "name",' +
-                    '"properties": {' +
-                    '"name": "EPSG:4326"' +
-                    '}' +
-                    '},' +
-                    '"features": [{' +
-                    '"type": "Feature",' +
-                    '"geometry": ' + result +
-                    '}]' +
-                    '}';
-                return geojsonObject;
-            }
-            
-
-           <?php include('switchLayer.php'); ?>
+            //ad layer vnm_3, coloring
+            <?php include('switchLayer.php'); ?>
+            //het click       
         };
-        //});
     </script>
 </body>
 

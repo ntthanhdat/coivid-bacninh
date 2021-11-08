@@ -7,8 +7,11 @@
         $functionname = $_POST['functionname'];
         
         $aResult ="ajax";
-        if  ($functionname == 'diplayMapToAjax')
-            $aResult = diplayMapToAjax($paPDO, $paSRID, $paPoint);
+        if  ($functionname == 'displayMapToAjax')
+            $aResult = displayMapToAjax($paPDO, $paSRID, $paPoint);
+        elseif($functionname == 'coloringAJAX')
+        $aResult = coloringAJAX($paPDO, $paSRID, $paPoint);
+        
         echo $aResult;
     
         closeDB($paPDO);
@@ -49,8 +52,12 @@
         // Ngắt kết nối
         $paPDO = null;
     }
-    function diplayMapToAjax($paPDO,$paSRID,$paPoint)
+    function coloringAJAX($paPDO,$paSRID,$paPoint)
     {
+        return "khong chon huyen nao";
+       
+    }
+    function displayMapToAjax($paPDO,$paSRID,$paPoint) {
         $paPoint = str_replace(',', ' ', $paPoint); $mySQLStr1 = "select name_2 from \"gadm36_vnm_2\"  where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
         $result1 = query($paPDO, $mySQLStr1);
         if($result1!= null){
@@ -58,7 +65,7 @@
             foreach ($result1 as $huyen){
                 $tenhuyen=$huyen['name_2'];
             }
-            $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"gadm36_vnm_3\" where name_2 like '$tenhuyen' "; //ten cac xa trong huyen
+            $mySQLStr = "SELECT ST_AsGeoJson(geom) as geo, color from \"gadm36_vnm_3\" where name_2 like '$tenhuyen' "; //ten cac xa trong huyen
             $result = query($paPDO, $mySQLStr);
             
             if ($result != null)
@@ -67,7 +74,7 @@
                 $ds="";
                 
                 foreach($result as $xa){
-                $ds=$ds.$xa['geo']."-";
+                $ds=$ds.$xa['geo']."-".$xa['color']."-";
                 }
                 return $ds;
             }
