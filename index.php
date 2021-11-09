@@ -44,7 +44,7 @@
             </td>
         </tr>
     </table>
-    <?php include 'CMR_pgsqlAPI.php' ?>
+ 
     <script>
         var format = 'image/png';
         var map;
