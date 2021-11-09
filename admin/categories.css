@@ -1,0 +1,50 @@
+.cgr__wrap {
+  margin: 1rem;
+}
+
+.cgr__wrap .cgr__col1 {
+  height: 40vh;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.cgr__wrap .cgr__col1 table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.cgr__wrap .cgr__col1 td, .cgr__wrap .cgr__col1 th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.cgr__wrap .cgr__col1 tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.cgr__wrap form > div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.cgr__wrap form > div select {
+  width: 25%;
+}
+
+.cgr__wrap form > input {
+  width: 10%;
+}
+
+.cgr__wrap form #color {
+  width: 10%;
+  margin-bottom: 1rem;
+}
+
+.cgr__wrap form #file {
+  width: 15%;
+  margin-bottom: 1rem;
+}
+/*# sourceMappingURL=categories.css.map */
