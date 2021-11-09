@@ -1,11 +1,5 @@
 <?php
-try{
-    $paPDO = new PDO('pgsql:host=Localhost; dbname=covidbn; port=5432', 'postgres', '123');
-                    }
-                    catch(PDOException $e) {
-                        echo "Thất bại, Lỗi: " . $e->getMessage();
-                        return null;
-                    }
+include ('../config.php');
                     $val = $_GET["value"];
                     // echo $val;
                     $paSQLStr ="SELECT gadm36_vnm_3.name_3 FROM gadm36_vnm_3 where gadm36_vnm_3.name_2='$val'";

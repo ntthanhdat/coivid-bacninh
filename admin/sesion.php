@@ -1,12 +1,5 @@
 <?php
-	try{
-		$paPDO = new PDO('pgsql:host=Localhost; dbname=covidbn; port=5432', 'postgres', '123');
-		// echo "connected";
-	}
-	catch(PDOException $e) {
-		echo "Thất bại, Lỗi: " . $e->getMessage();
-		return null;
-	}
+	include ('../config.php');
 	// session_start();
 	$username=$_POST['username'];
 	$pw=$_POST['pw'];

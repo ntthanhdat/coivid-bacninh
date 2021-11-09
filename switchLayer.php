@@ -41,6 +41,7 @@ function createJsonObj(result) {
                 var vectorLayer = new ol.layer.Vector({
                     source: vectorSource,
                     style: styleFunction,
+                    opacity: 0.2,
                 });
                 map.addLayer(vectorLayer);
             }
@@ -69,6 +70,7 @@ function createJsonObj(result) {
                 var vectorLayer = new ol.layer.Vector({
                     source: vectorSource,
                     style: styleFunction,
+                    opacity: 0.2,
                 });
                 map.addLayer(vectorLayer);
             }
@@ -97,6 +99,7 @@ function createJsonObj(result) {
                 var vectorLayer = new ol.layer.Vector({
                     source: vectorSource,
                     style: styleFunction,
+                    opacity: 0.2,
                 });
                 map.addLayer(vectorLayer);
             }
@@ -125,6 +128,7 @@ function createJsonObj(result) {
                 var vectorLayer = new ol.layer.Vector({
                     source: vectorSource,
                     style: styleFunction,
+                    opacity: 0.2,
                 });
                 map.addLayer(vectorLayer);
             }

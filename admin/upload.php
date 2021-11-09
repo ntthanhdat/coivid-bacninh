@@ -1,71 +1,4 @@
-<?php
-require_once 'Classes/PHPExcel.php';
-//Đường dẫn file
-if(isset($_POST['import'])){
-$file = $_FILES['file']['name'];
-//Tiến hành xác thực file
-$objFile = PHPExcel_IOFactory::identify($file);
-$objData = PHPExcel_IOFactory::createReader($objFile);
-//Chỉ đọc dữ liệu
-$objData->setReadDataOnly(true);
-// Load dữ liệu sang dạng đối tượng
-$objPHPExcel = $objData->load($file);
-//Lấy ra số trang sử dụng phương thức getSheetCount();
-// Lấy Ra tên trang sử dụng getSheetNames();
-//Chọn trang cần truy xuất
-$sheet = $objPHPExcel->setActiveSheetIndex(0);
-//Lấy ra số dòng cuối cùng
-$Totalrow = $sheet->getHighestRow();
-//Lấy ra tên cột cuối cùng
-$LastColumn = $sheet->getHighestColumn();
-//Chuyển đổi tên cột đó về vị trí thứ, VD: C là 3,D là 4
-$TotalCol = PHPExcel_Cell::columnIndexFromString($LastColumn);
-//Tạo mảng chứa dữ liệu
-$data = [];
-//Tiến hành lặp qua từng ô dữ liệu
-//----Lặp dòng, Vì dòng đầu là tiêu đề cột nên chúng ta sẽ lặp giá trị từ dòng 2
-for ($i = 2; $i <= $Totalrow; $i++) {
-    //----Lặp cột
-    for ($j = 0; $j < $TotalCol; $j++) {
-        // Tiến hành lấy giá trị của từng ô đổ vào mảng
-        $data[$i - 2][$j] = $sheet->getCellByColumnAndRow($j, $i)->getValue();
-    }
-}
-//Hiển thị mảng dữ liệu
-foreach ($data as $item){
-    include ('../config.php');
-    $ca_benh = $item[2];
-    $color=$item[3];
-    $xa = $item[1];
-    if($ca_benh!=""&&$color!=""&&$xa!=""){
-    $paSQLStr ="UPDATE gadm36_vnm_3 SET ca_benh = $ca_benh,  color = '$color'  WHERE gadm36_vnm_3.name_3 = '$xa'";
-        $paPDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $paPDO->prepare($paSQLStr);
-        $stmt->execute(); 
-    }
-}
-}
-?>
-<?php
-if(isset($_POST['submit']) && $_POST['ca_benh']!=""){
-    include ('../config.php');
-    $ca_benh=$_POST['ca_benh'];
-    $xa=$_POST['customerWard'];
 
-    if($_POST['color']!=""){
-        $color = $_POST['color'];
-        $paSQLStr ="UPDATE gadm36_vnm_3 SET ca_benh = $ca_benh,  color = '$color'  WHERE gadm36_vnm_3.name_3 = '$xa'";
-        $paPDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $paPDO->prepare($paSQLStr);
-        $stmt->execute(); 
-}else{
-    $paSQLStr ="UPDATE gadm36_vnm_3 SET ca_benh = $ca_benh WHERE gadm36_vnm_3.name_3 = '$xa'";
-    $paPDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $stmt = $paPDO->prepare($paSQLStr);
-    $stmt->execute(); 
-}
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,8 +9,12 @@ if(isset($_POST['submit']) && $_POST['ca_benh']!=""){
     <link rel="stylesheet" href="categories.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
-<body>
-    <div class="cgr__wrap">
+<?php
+include('../config.php');
+
+?>
+<main class="container clearfix pt-3">
+<div class="cgr__wrap">
     <h2>QUẢN LÝ THÔNG TIN CA BỆNH TỈNH BẮC NINH</h2>
         <div class="cgr__col1">
             <table>
@@ -144,24 +81,23 @@ if(isset($_POST['submit']) && $_POST['ca_benh']!=""){
             <button type="submit" class="btn btn-primary" name="import">Import</button>
         </form>
     </div>
-    <script>
-    function myFunction(str) {
-        console.log(str);
-        if(window.XMLHttpRequest){
-            xmlhttp = new XMLHttpRequest();
-        
-        }else{
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <form action="process-upload.php" method="post" enctype="multipart/form-data">
 
-        }
-        xmlhttp.onreadystatechange = function(){
-            if(this.readyState==4 && this.status==200){
-                document.getElementById('customerWard').innerHTML=this.responseText;
-            }
-        }
-        xmlhttp.open("GET", "helpre.php?value="+str, true);
-        xmlhttp.send();
-}
-</script>          
+                
+                    <div class="form-group">
+                        <span class="btn btn-default btn-file">
+                            <input type="file" name="file" id="imgInp">
+                        </span>
+                    </div>
+
+                <button type="submit" name="submit" class="btn btn-primary">Lưu</button>
+            </form>
+
+        </div>
+    </div>
+</main>
 </body>
 </html>

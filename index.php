@@ -91,7 +91,7 @@
             });
             map = new ol.Map({
                 target: "map",
-                layers: [layerBG, layerVNM_1],
+                layers: [layerBG],
                 view: viewMap
             });
             //ad layer vnm_3, coloring

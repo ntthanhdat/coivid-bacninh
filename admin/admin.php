@@ -22,20 +22,14 @@
                 <li><a href=""><i class="fas fa-tachometer-alt"></i> Trang chủ</a></li>
                 <li><a href=""><i class="fas fa-paste"></i> <a href="categories.php">Quản lý dữ liệu</a></a></li>
                 <li><a href=""><i class="fas fa-paste"></i> <a href="https://bacninh.gov.vn/phong-chong-dich-benh-corona">Bài viết</a></a></li>
-                <li><a href=""><i class="fas fa-paste"></i> Thành viên</a></li>
+                <li><a href="upload.php"><i class="fas fa-paste"></i> Nhập dữ liệu</a></li>
             </ul>
         </div>
     </div>
     <div class="admin__wrap_r">
         <p>TRANG CHỦ</p>
         <?php
-                    try{
-                        $paPDO = new PDO('pgsql:host=Localhost; dbname=covidbn; port=5432', 'postgres', '123');
-                    }
-                    catch(PDOException $e) {
-                        echo "Thất bại, Lỗi: " . $e->getMessage();
-                        return null;
-                    }
+                    include ('../config.php');
                     $paSQLStr ="SELECT sum(gadm36_vnm_3.ca_benh) as ca_benh from gadm36_vnm_3";
                     $paPDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $stmt = $paPDO->prepare($paSQLStr);
