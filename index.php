@@ -72,7 +72,7 @@
             layerBG = new ol.layer.Tile({
                 source: new ol.source.OSM({})
             });
-            var layerVNM_1 = new ol.layer.Image({
+            var layerVNM_2 = new ol.layer.Image({
                 source: new ol.source.ImageWMS({
                     ratio: 1,
                     url: 'http://localhost:8080/geoserver/covidbn/wms',
@@ -81,7 +81,20 @@
                         'FORMAT': format,
                         'VERSION': '1.1.0',
                         'STYLES': '',
-                        'LAYERS': 'gadm36_vnm_1'
+                        'LAYERS': 'gadm36_vnm_2'
+                    }
+                })
+            });
+            var layerVNM_3 = new ol.layer.Image({
+                source: new ol.source.ImageWMS({
+                    ratio: 1,
+                    url: 'http://localhost:8080/geoserver/covidbn/wms',
+
+                    params: {
+                        'FORMAT': format,
+                        'VERSION': '1.1.0',
+                        'STYLES': '',
+                        'LAYERS': 'gadm36_vnm_3'
                     }
                 })
             });
@@ -91,7 +104,7 @@
             });
             map = new ol.Map({
                 target: "map",
-                layers: [layerBG],
+                layers: [layerBG,layerVNM_2,layerVNM_3],
                 view: viewMap
             });
             //ad layer vnm_3, coloring
