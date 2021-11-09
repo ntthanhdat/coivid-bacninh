@@ -7,7 +7,7 @@ $.ajax({
                     success: function(result, status, erro) {
                         ar=[];
                          ar = result.split('-');
-                        for(var i = 0; i < ar.length; i+=2){
+                        for(var i = 0; i < ar.length-1; i+=2){
                             //alert(ar[i]);
                             if(ar[i+1]!='')
                             coloringLayer(ar[i],ar[i+1]);
@@ -19,3 +19,4 @@ $.ajax({
                         alert(req + " " + status + " " + error);
                     }
                 });
+               

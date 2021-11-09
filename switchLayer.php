@@ -166,7 +166,7 @@ function createJsonObj(result) {
                     success: function(result, status, erro) {
                         ar=[];
                          ar = result.split('-');
-                        for(var i = 0; i < ar.length; i+=2){
+                        for(var i = 0; i < ar.length-1; i+=2){
 
                       
 

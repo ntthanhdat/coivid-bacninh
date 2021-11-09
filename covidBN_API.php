@@ -12,6 +12,8 @@
             $aResult = displayMapToAjax($paPDO, $paSRID, $paPoint);
         elseif($functionname == 'coloringAJAX')
         $aResult = coloringAJAX($paPDO);
+        elseif($functionname == 'loadDataAJAX')
+        $aResult = loadDataAJAX($paPDO,$paSRID,$paPoint);
         
         echo $aResult;
     
@@ -99,4 +101,64 @@
         else
         return "khong chon huyen nao";
        
+    }
+    function loadDataAJAX($paPDO,$paSRID,$paPoint){
+        $paPoint = str_replace(',', ' ', $paPoint); $mySQLStr1 = "select name_2 from \"gadm36_vnm_2\"  where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
+        $result1 = query($paPDO, $mySQLStr1);
+        if($result1!= null){
+            $tenhuyen='Luong Tai';
+            foreach ($result1 as $huyen){
+                $tenhuyen=$huyen['name_2'];
+            }
+            $mySQLStr = "SELECT name_3, ca_benh from \"gadm36_vnm_3\" where name_2 like '$tenhuyen' "; //ten cac xa trong huyen
+            $result = query($paPDO, $mySQLStr);
+            
+            if ($result != null)
+            {  
+               
+                $ds='
+                <tr>
+                    <th>Địa phương</th>
+                    <th>Ca bệnh</th>
+                </tr>
+                ';
+                foreach ($result as $item){
+                    $ds=$ds. '<tr>
+                    <td>'.$item['name_3'].'</td>
+                          <td>'.$item['ca_benh'].'</td>
+                          </tr>';
+                }
+    return $ds;
+            }
+            else
+                return "khong co xa nao";
+        }
+        else
+        return "khong chon huyen nao";
+
+
+        /*
+        $mySQLStr =  "SELECT gadm36_vnm_3.name_2, sum(gadm36_vnm_3.ca_benh) as  ca_benh from gadm36_vnm_3 GROUP BY gadm36_vnm_3.name_2";//so ca benh cua cac huyen
+        $result = query($paPDO, $mySQLStr);
+        
+        if ($result != null)
+        {  
+           
+            $ds='<table>
+                        <tr>
+                            <th>Địa phương</th>
+                            <th>Ca bệnh</th>
+                        </tr>
+                        ';
+                        foreach ($result as $item){
+                            $ds=$ds. '<tr>
+                            <td>'.$item['name_2'].'</td>
+                                  <td>'.$item['ca_benh'].'</td>
+                                  </tr>';
+                        }
+            return $ds;
+        }
+        else
+            return "khong co huyen nao";
+            */
     }
