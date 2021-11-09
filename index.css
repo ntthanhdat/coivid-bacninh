@@ -1,0 +1,97 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", sans-serif;
+  color: white;
+}
+
+.m_header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: #e3342f;
+  color: white;
+}
+
+.m_header > img {
+  width: 50px;
+  height: 50px;
+  margin-top: 8px;
+}
+
+.m_header > p {
+  font-weight: bold;
+  font-size: 21px;
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+
+.m_header span {
+  color: yellow;
+}
+
+.m_header > a {
+  color: white;
+  text-decoration: none;
+  font-size: 21px;
+  margin-top: 1.3rem;
+  font-weight: bold;
+}
+
+.m_header > a:hover {
+  color: black;
+}
+
+.row1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.row1 .col2 {
+  width: 20.7rem;
+  margin: 0;
+  background-color: #2175b9;
+  text-align: center;
+}
+
+.row1 .col2 > p {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.row1 .col2 .ca_benh {
+  font-size: 17px;
+  margin-bottom: 4rem;
+}
+
+.row1 .col2 .link {
+  font-size: 17px;
+}
+
+.row1 .col2 > table {
+  background-color: #147ed6;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.row1 .col2 > table td, .row1 .col2 > table th {
+  text-align: left;
+  padding: 8px;
+}
+
+.footer {
+  text-align: center;
+  background-color: #6cb2eb;
+  height: 15vh;
+}
+
+.footer > p {
+  font-size: 15px;
+  margin: 0;
+  padding-top: 1rem;
+}
+/*# sourceMappingURL=index.css.map */

@@ -30,10 +30,11 @@ function createJsonObj(result) {
                         }),
                         stroke: new ol.style.Stroke({
                             color: '#660000', 
-                            width: 2
+                            width: 1
                         })
                     })
                 };
+                
                 var styleFunction = function (feature) {
                     return styles[feature.getGeometry().getType()];
                 };
@@ -58,7 +59,7 @@ function createJsonObj(result) {
                         }),
                         stroke: new ol.style.Stroke({
                             color: '#001a00', 
-                            width: 2
+                            width: 1
                         })
                     })
                 };
@@ -86,7 +87,35 @@ function createJsonObj(result) {
                         }),
                         stroke: new ol.style.Stroke({
                             color: 'orange', 
-                            width: 2
+                            width: 1
+                        })
+                    })
+                };
+                var styleFunction = function (feature) {
+                    return styles[feature.getGeometry().getType()];
+                };
+                var vectorLayer = new ol.layer.Vector({
+                    source: vectorSource,
+                    style: styleFunction,
+                });
+                map.addLayer(vectorLayer);
+            }
+            function O_drawGeoJsonObj(paObjJson) {
+                var vectorSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(paObjJson, {
+                        dataProjection: 'EPSG:4326',
+                        featureProjection: 'EPSG:3857'
+                    })
+                });
+                var styles  = {
+                    'MultiPolygon': new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'orange',
+                            
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'red', 
+                            width: 1
                         })
                     })
                 };
@@ -114,6 +143,8 @@ function createJsonObj(result) {
                     R_drawGeoJsonObj(objJson);
                 }else if(color=='G'){
                     G_drawGeoJsonObj(objJson);
+                }else if(color=='O'){
+                    O_drawGeoJsonObj(objJson);
                 }else 
                 Y_drawGeoJsonObj(objJson);
                 

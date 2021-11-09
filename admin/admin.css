@@ -1,0 +1,203 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.admin__wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.admin__wrap .admin__container {
+  background-color: #343a40;
+  width: 17%;
+  color: white;
+  padding: 0 30px;
+  height: 100vh;
+}
+
+.admin__wrap .admin__container > p {
+  text-align: center;
+  font-size: 30px;
+  color: yellowgreen;
+  font-weight: bold;
+  padding: 1rem;
+  border-bottom: 1px solid white;
+}
+
+.admin__wrap .admin__container .user__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 1rem 0;
+  border-bottom: 1px solid white;
+}
+
+.admin__wrap .admin__container .user__container > img {
+  width: 50px;
+  border-radius: 50%;
+}
+
+.admin__wrap .admin__container .user__container > p {
+  padding-top: 1rem;
+  padding-left: 1rem;
+  text-align: center;
+}
+
+.admin__wrap .admin__container .a__menu > ul {
+  list-style: none;
+}
+
+.admin__wrap .admin__container .a__menu > ul li {
+  background-color: #494e53;
+  margin-bottom: 0.2rem;
+  margin-top: 0.2rem;
+  padding: 1rem;
+}
+
+.admin__wrap .admin__container .a__menu > ul li > a {
+  text-decoration: none;
+  color: white;
+}
+
+.admin__wrap .admin__container .a__menu > ul li:hover {
+  background-color: #000000;
+}
+
+.admin__wrap .admin__container .a__menu > ul li:hover a {
+  color: yellowgreen;
+}
+
+.admin__wrap .admin__wrap_r {
+  background-color: #f4f6f9;
+  background-image: url("http://congdoan.vnpt.vn/Uploads/image/News/Thumbnails/2020/4/Thumbnails07372020053721unnamed.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 83%;
+}
+
+.admin__wrap .admin__wrap_r > p {
+  font-weight: bold;
+  font-size: 30px;
+  margin-left: 8rem;
+  padding-top: 6rem;
+  color: white;
+}
+
+.admin__wrap .admin__wrap_r > h2 {
+  color: white;
+  font-weight: bold;
+  font-size: 30px;
+  margin-left: 8rem;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r {
+  padding-top: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .cm {
+  margin-left: 1rem;
+  background-color: #17a2b8;
+  width: 20rem;
+  height: 8rem;
+  color: white;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .cm > p {
+  font-size: 40px;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .cm > span {
+  padding: 0.5rem;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .cm > a {
+  color: white;
+  display: block;
+  margin-top: 1.5rem;
+  text-decoration: none;
+  background-color: #007bff;
+  padding: 0.5rem 37%;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .cm > a:hover {
+  color: brown;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .bv {
+  margin-left: 1rem;
+  background-color: #28a745;
+  width: 20rem;
+  height: 8rem;
+  color: white;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .bv > p {
+  font-size: 40px;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .bv > span {
+  padding: 0.5rem;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .bv > a {
+  color: white;
+  display: block;
+  margin-top: 1.5rem;
+  text-decoration: none;
+  background-color: #24963e;
+  padding: 0.5rem 37%;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .bv > a:hover {
+  color: brown;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .tv {
+  margin-left: 1rem;
+  background-color: #ffc107;
+  width: 20rem;
+  height: 8rem;
+  color: white;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .tv > p {
+  font-size: 40px;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .tv > span {
+  padding: 0.5rem;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .tv > a {
+  color: white;
+  display: block;
+  margin-top: 1.5rem;
+  text-decoration: none;
+  background-color: #e5ad06;
+  padding: 0.5rem 37%;
+}
+
+.admin__wrap .admin__wrap_r .admin__container_r .tv > a:hover {
+  color: brown;
+}
+/*# sourceMappingURL=admin.css.map */

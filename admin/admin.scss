@@ -1,0 +1,178 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.admin__wrap{
+    display: flex;
+.admin__container{
+    background-color: #343a40;
+    width: 17%;
+    color: white;
+    padding:0 30px;
+    height: 100vh;
+    >p{
+        text-align: center;
+        font-size: 30px;
+        color: yellowgreen;
+        font-weight: bold;
+        padding: 1rem;
+        border-bottom: 1px solid white;
+    }
+    .user__container{
+        display: flex;
+        padding: 1rem 0;
+        border-bottom: 1px solid white;
+        >img{
+            width: 50px;
+            border-radius: 50%;
+        }
+        >p{
+            padding-top: 1rem;
+            padding-left:1rem ;
+            text-align: center;
+        }
+    }
+    .a__menu{
+        >ul{
+            list-style: none;
+            li{
+                background-color: #494e53;
+                
+                margin-bottom:0.2rem ;
+                margin-top: 0.2rem;
+                
+                padding: 1rem ;
+                >a{
+                    text-decoration: none;
+                    color: white;
+                }
+            }
+            li:hover{
+                background-color: #000000;
+            }
+            li:hover a{
+                color: yellowgreen;
+            }
+        }
+    }
+}
+.admin__wrap_r{
+    background-color: #f4f6f9;
+    background-image: url("http://congdoan.vnpt.vn/Uploads/image/News/Thumbnails/2020/4/Thumbnails07372020053721unnamed.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 83%;
+    >p{
+        font-weight: bold;
+        font-size: 30px;
+        margin-left: 8rem;
+        padding-top: 6rem;
+        color: white;
+
+    }
+    >h2{
+        color: white;
+        font-weight: bold;
+        font-size: 30px;
+        margin-left: 8rem;
+    }
+
+.admin__container_r{
+    // background-color: crimson;
+    padding-top: 2rem;
+    display: flex;
+    justify-content: center;
+    .cm{
+        margin-left: 1rem;
+        background-color: #17a2b8;
+        // padding: 1rem;
+        width: 20rem;
+        height: 8rem;
+        color:white;
+        >p{
+            font-size: 40px;
+            font-weight: bold;
+            padding: 0.5rem;
+        }
+        >span{
+            padding: 0.5rem;
+            font-size: 18px;
+            font-weight: bold;
+            
+        }
+        >a{
+            color: white;
+            display: block;
+            margin-top: 1.5rem;
+            text-decoration: none;
+            background-color: #007bff;
+            padding: 0.5rem 37%;
+        }
+        >a:hover{
+            color: brown;
+        }
+    }
+    .bv{
+        margin-left: 1rem;
+        background-color: #28a745;
+        // padding: 1rem;
+        width: 20rem;
+        height: 8rem;
+        color:white;
+        >p{
+            font-size: 40px;
+            font-weight: bold;
+            padding: 0.5rem;
+        }
+        >span{
+            padding: 0.5rem;
+            font-size: 18px;
+            font-weight: bold;
+            
+        }
+        >a{
+            color: white;
+            display: block;
+            margin-top: 1.5rem;
+            text-decoration: none;
+            background-color: #24963e;
+            padding: 0.5rem 37%;
+        }
+        >a:hover{
+            color: brown;
+        }
+    
+    }
+    .tv{
+        margin-left: 1rem;
+        background-color: #ffc107;
+        // padding: 1rem;
+        width: 20rem;
+        height: 8rem;
+        color:white;
+        >p{
+            font-size: 40px;
+            font-weight: bold;
+            padding: 0.5rem;
+        }
+        >span{
+            padding: 0.5rem;
+            font-size: 18px;
+            font-weight: bold;
+            
+        }
+        >a{
+            color: white;
+            display: block;
+            margin-top: 1.5rem;
+            text-decoration: none;
+            background-color: #e5ad06;
+            padding: 0.5rem 37%;
+        }
+        >a:hover{
+            color: brown;
+        }
+    }
+}
+}
+}
